@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { DreamHomeCardDTO } from "../../../dtos/DreamHomeCardDTO";
+import { DreamHomeCardDTO } from "../../dtos/DreamHomeCardDTO";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Tooltip, Divider, Text, Button } from "react-native-paper";
 import { FontAwesome } from "@expo/vector-icons";
