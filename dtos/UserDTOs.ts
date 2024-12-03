@@ -10,6 +10,7 @@ export interface UserDTO {
     name: string;
     email: string;
     dateOfBirth: string | null;
+    emailVerified: boolean;
 }
 
 export interface UserResponseLoginDTO {

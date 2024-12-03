@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { loginUser, signInWithGoogle } from "../../controllers/AuthController";
-import { useAuth } from "../../context/AuthContext";
-import { validateEmail } from "../../utils/validationsUtils";
+import { loginUser, signInWithGoogle } from "../../../controllers/AuthController";
+import { useAuth } from "../../../context/AuthContext";
+import { validateEmail } from "../../../utils/validationsUtils";
+import { FontAwesome } from '@expo/vector-icons';
 
 interface LoginForm {
     email: string;
@@ -48,11 +49,14 @@ export default function LoginPage() {
                 throw new Error(response?.message);
             }
 
+            if(!response?.data)
+                return;
+
             Alert.alert("Sucesso", "Login realizado com sucesso!");
-            // authContext?.login(response!.data);
+            authContext?.login(response!.data);
 
             setTimeout(() => {
-                // router.push("/");
+                router.navigate("/app");
             }, 1500);
         } catch (error: any) {
             Alert.alert("Erro", error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.");
@@ -97,14 +101,18 @@ export default function LoginPage() {
             >
                 {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Entrar</Text>}
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => router.push("/register")}>
-                <Text style={styles.link}>Criar conta</Text>
-            </TouchableOpacity> */}
+            <TouchableOpacity onPress={() => router.navigate("/auth/register")}>
+                <Text style={styles.createAccount}>Criar conta</Text>
+            </TouchableOpacity>
+            <View style={{width: "100%", backgroundColor: "#cecece", marginVertical: 30, height: 1}}>
+
+            </View>
             <TouchableOpacity
                 style={[styles.googleButton, loading && styles.buttonDisabled]}
                 onPress={handleGoogleLogin}
                 disabled={loading}
             >
+                <FontAwesome name="google" size={24} color="#EA4335" style={styles.googleIcon} />
                 <Text style={styles.googleButtonText}>Login com Google</Text>
             </TouchableOpacity>
         </View>
@@ -134,13 +142,16 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#fff",
     },
+    createAccount: {
+        color: "#1976d2",
+        fontWeight: 'bold'
+    },
     button: {
         width: "100%",
         height: 50,
-        backgroundColor: "#6200ea",
+        backgroundColor: "#1976d2",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 5,
         marginBottom: 15,
     },
     buttonDisabled: {
@@ -159,14 +170,22 @@ const styles = StyleSheet.create({
     googleButton: {
         width: "100%",
         height: 50,
-        backgroundColor: "#4285F4",
+        borderColor: "#EA4335",
+        borderWidth: 1,
+        backgroundColor: "#fff",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
+        flexDirection: "row",
+        marginTop: 15,
     },
     googleButtonText: {
-        color: "#fff",
+        color: "#EA4335",
         fontSize: 16,
         fontWeight: "bold",
+        marginLeft: 10,
+    },
+    googleIcon: {
+        marginRight: 10,
     },
 });
