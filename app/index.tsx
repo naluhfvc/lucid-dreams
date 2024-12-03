@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Home } from "./home/Home";
+import { Home } from "./app/home/Home";
 import { FontAwesome } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();

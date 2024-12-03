@@ -56,7 +56,7 @@ export default function LoginPage() {
             authContext?.login(response!.data);
 
             setTimeout(() => {
-                router.navigate("/app");
+                router.navigate("/app/home/Home");
             }, 1500);
         } catch (error: any) {
             Alert.alert("Erro", error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.");
