@@ -7,7 +7,7 @@ import { ScrollView, View } from "react-native";
 import { DreamsHomeCard } from "./DreamsHomeCard";
 import { dreamHomeCardData } from "@/context/seedData";
 
-export function Home () {
+export function HomeScreen () {
     const [dreamsData, setDreamsData] = useState<DreamHomeCardDTO[]>([]);
     const { getLoggedId } = useAuth();
     const db = getDatabase();
