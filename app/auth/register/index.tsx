@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, Button } from "react-native";
 import { useRouter } from "expo-router";
-import { FontAwesome } from '@expo/vector-icons';
-import { UserRegisterDTO } from "@/src/dtos/UserDTOs";
 import { validateDateOfBirth, validateEmail } from "@/utils/validationsUtils";
 import { registerUser, signInWithGoogle } from "@/controllers/AuthController";
+import { UserRegisterDTO } from "@/dtos/UserDTOs";
 
-const RegisterPage = () => {
+export default function RegisterScreen () {
     const [registerForm, setRegisterForm] = useState<UserRegisterDTO>({
         name: "",
         email: "",
@@ -172,5 +171,3 @@ const styles = StyleSheet.create({
         textDecorationLine: "underline",
     }
 });
-
-export default RegisterPage;

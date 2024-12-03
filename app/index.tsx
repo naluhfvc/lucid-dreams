@@ -3,10 +3,19 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { HomeScreen } from "./home/HomeScreen";
 import { FontAwesome } from "@expo/vector-icons";
 import { MyDreamsScreen } from "./myDreams/MyDreamsScreen";
+import LoginScreen from "./auth/login";
+import { useAuth } from "@/context/AuthContext";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
+
+    // const { isLoggedIn } = useAuth();
+
+    // if (!isLoggedIn()) {
+    //     return <LoginScreen />;
+    // }
+    
     return (
         <Drawer.Navigator
             initialRouteName="Home"

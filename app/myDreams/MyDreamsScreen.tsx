@@ -3,88 +3,54 @@ import { DreamHomeCardDTO } from "../../dtos/DreamHomeCardDTO";
 import { get, getDatabase, ref } from "firebase/database";
 import { useAuth } from "../../context/AuthContext";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Button, Card, Text, Tooltip } from "react-native-paper";
+import { Button, Card, Divider, Text, Tooltip } from "react-native-paper";
 import { View, StyleSheet, ScrollView } from "react-native";
 import theme from "@/utils/theme";
+import { dreamHomeCardData } from "@/context/seedData";
 
 const defaultImage = "https://via.placeholder.com/150";
 
 export const MyDreamsScreen = () => {
-    const titleRef = useRef<HTMLDivElement>(null);
-    const [isOverflowed, setIsOverflowed] = useState(false);
-    const [chooseFormatting, setChooseFormatting] = useState<number[]>([]);
-    const [isSelectedLeft, setIsSelectedLeft] = useState(true);
-    const [dreamsData, setDreamsData] = useState<DreamHomeCardDTO[]>([]);
+    const [dreamsData, setDreamsData]  = useState<DreamHomeCardDTO[]>([]);
     const { getLoggedId } = useAuth();
     const db = getDatabase();
 
     useEffect(() => {
-        if (titleRef.current) {
-            setIsOverflowed(titleRef.current.scrollWidth > titleRef.current.clientWidth);
-        }
+        setDreamsData(dreamHomeCardData);
     }, []);
 
-    useEffect(() => {
-        const fetchDreamsData = async () => {
-            const userId = getLoggedId();
-            const dreamsRef = ref(db, `dreams/${userId}`);
-            const snapshot = await get(dreamsRef);
+    // useEffect(() => {
+    //     const fetchDreamsData = async () => {
+    //         const userId = getLoggedId();
+    //         const dreamsRef = ref(db, `dreams/${userId}`);
+    //         const snapshot = await get(dreamsRef);
 
-            if (snapshot.exists()) {
-                const data: DreamHomeCardDTO[] = Object.values(snapshot.val());
-                const sortedData = data
-                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                    .slice(0, 6);
-                setDreamsData(sortedData);
-                console.log(sortedData);
-            } else {
-                setDreamsData([]);
-            }
-        };
+    //         if (snapshot.exists()) {
+    //             const data: DreamHomeCardDTO[] = Object.values(snapshot.val());
+    //             const sortedData = data
+    //                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    //                 .slice(0, 6);
+    //             setDreamsData(sortedData);
+    //             console.log(sortedData);
+    //         } else {
+    //             setDreamsData([]);
+    //         }
+    //     };
 
-        fetchDreamsData();
-    }, []);
-
-    const handleLeftButtonClick = () => {
-        setIsSelectedLeft(true);
-        setChooseFormatting(Array(dreamsData.length).fill(3));
-    };
-
-    const handleRightButtonClick = () => {
-        setIsSelectedLeft(false);
-        setChooseFormatting(Array(dreamsData.length).fill(6));
-    };
+    //     fetchDreamsData();
+    // }, []);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Meus Sonhos</Text>
-                <View style={styles.buttonGroup}>
-                    <Button
-                        mode={isSelectedLeft ? 'contained' : 'outlined'}
-                        onPress={handleLeftButtonClick}
-                        style={styles.button}
-                    >
-                        <MaterialIcons name="view-compact" size={24} color={theme.colors.primary} />
-                    </Button>
-                    <Button
-                        mode={!isSelectedLeft ? 'contained' : 'outlined'}
-                        onPress={handleRightButtonClick}
-                        style={styles.button}
-                    >
-                        <MaterialIcons name="dashboard" size={24} color={theme.colors.primary} />
-                    </Button>
-                </View>
             </View>
-
+            <Divider style={styles.divider}/>
             <View style={styles.cardsContainer}>
-                {dreamsData.map((dream, index) => (
+                {dreamsData.map((dream) => (
                     <Card
                         key={dream?.id}
-                        style={[
-                            styles.card,
-                            { width: chooseFormatting[index] === 3 ? '30%' : '45%' }, // Ajusta largura conforme formatação
-                        ]}
+                        style={styles.card}
                     >
                         <Card.Content>
                             <img
@@ -120,6 +86,9 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
     },
+    divider: {
+        marginBottom: 30,
+    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -135,7 +104,11 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     button: {
-        marginHorizontal: 4,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: theme.colors.primary
     },
     cardsContainer: {
         flexDirection: 'row',
@@ -144,6 +117,7 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     card: {
+        width: "100%",
         padding: 8,
         marginBottom: 16,
         borderRadius: 8,

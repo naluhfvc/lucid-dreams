@@ -11,7 +11,7 @@ interface LoginForm {
     password: string;
 }
 
-export default function LoginPage() {
+export default function LoginScreen() {
     const [loginForm, setLoginForm] = useState<LoginForm>({
         email: "",
         password: "",
@@ -56,7 +56,7 @@ export default function LoginPage() {
             authContext?.login(response!.data);
 
             setTimeout(() => {
-                router.navigate("/app/home/Home");
+                router.navigate("/home/HomeScreen");
             }, 1500);
         } catch (error: any) {
             Alert.alert("Erro", error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.");
